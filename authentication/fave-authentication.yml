@@ -1,0 +1,28 @@
+generated: '2026-07-19'
+method: searched
+source: openapi/fave-favepay-omni-openapi.yml
+docs: https://developers.myfave.com/fpo-guide.html
+model: >-
+  Request signing (not a bearer/OAuth scheme). Every request is signed with
+  HMAC-SHA256 using the secret key Fave issues per integration during partner
+  onboarding. The signing string is the URL-encoded request fields in submission
+  order (never alphabetical), excluding `sign` and `country_code`, plus
+  `outlet_id` on list, `id` on acknowledge, and `details` on merchant scan. The
+  computed digest is passed as `sign` (query param on GET, body field on POST).
+  Webhook callbacks carry the same `sign` field and must be verified before use.
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - query
+schemes:
+- name: hmacSignature
+  type: apiKey
+  in: query
+  parameter: sign
+  description: HMAC-SHA256 signature computed over the URL-encoded request fields in submission
+    order (excluding sign and country_code, and excluding outlet_id on list, id on acknowledge,
+    and details on merchant scan), keyed by the secret Fave issued for the integration. On POST
+    requests the signature is passed as the sign field in the request body.
+  sources:
+  - openapi/fave-favepay-omni-openapi.yml
