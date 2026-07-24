@@ -1,0 +1,340 @@
+openapi: 3.1.0
+info:
+  title: FavePay Omni (FPO) Payments API
+  version: v1
+  description: FavePay Omni is Fave's partner payment API for accepting payments online or in-store. Partners create single-use QR codes or payment URLs, process customer-presented (merchant-scan) QR/barcodes, look up and list transactions, acknowledge them, and issue full or partial refunds. Transaction status changes are delivered via signed webhook callbacks. Every request is signed with HMAC-SHA256 using a secret key Fave issues during partner onboarding. Operates across Malaysia (MY), Singapore (SG) and Indonesia (ID).
+  contact:
+    name: Fave Partner Support
+    url: https://developers.myfave.com/
+  x-apievangelist:
+    generated: '2026-07-19'
+    method: generated
+    source: https://developers.myfave.com/fpo-guide.html
+    note: Faithfully generated from Fave's published partner documentation (FavePay Omni guide). No provider-published OpenAPI was found; this captures the documented endpoints, fields, auth and webhooks verbatim.
+servers:
+- url: https://omni.myfave.com
+  description: Production
+- url: https://omni.dino.fave.ninja
+  description: Sandbox (test)
+security:
+- hmacSignature: []
+tags:
+- name: Payments
+  description: Create charges via QR code or merchant scan.
+paths:
+  /api/fpo/v1/{country_code}/qr_codes:
+    post:
+      operationId: createQrCode
+      tags:
+      - Payments
+      summary: Create a single-use QR code or payment URL
+      description: Creates a single-use QR code or payment URL the customer scans/opens to pay. Returns the payment payload in the requested format.
+      parameters:
+      - $ref: '#/components/parameters/CountryCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQrCodeRequest'
+      responses:
+        '200':
+          description: QR code / payment payload created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateQrCodeResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/fpo/v1/{country_code}/merchant_scan:
+    post:
+      operationId: merchantScan
+      tags:
+      - Payments
+      summary: Process a customer-presented QR / barcode (merchant scan)
+      description: Charges a customer by processing the QR or barcode payload the merchant scanned from the customer's Fave app.
+      parameters:
+      - $ref: '#/components/parameters/CountryCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantScanRequest'
+      responses:
+        '200':
+          description: Charge processed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  responses:
+    InternalError:
+      description: Server failure (internal_error / unexpected_error).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Invalid signature or outlet not linked to the integration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Unknown app_id, missing transaction, or empty transaction history.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Invalid parameters (validation) or refund outside window (stale_transaction).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: Unsupported format or provider rejection.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    CountryCode:
+      name: country_code
+      in: path
+      required: true
+      description: Market the request targets.
+      schema:
+        type: string
+        enum:
+        - MY
+        - SG
+        - ID
+  schemas:
+    MerchantScanRequest:
+      type: object
+      required:
+      - omni_reference
+      - total_amount_cents
+      - app_id
+      - outlet_id
+      - code
+      - sign
+      properties:
+        omni_reference:
+          type: string
+          maxLength: 28
+        total_amount_cents:
+          type: integer
+        app_id:
+          type: string
+        outlet_id:
+          type: integer
+        code:
+          type: string
+          description: Customer QR or barcode payload.
+        callback_url:
+          type: string
+        details:
+          type: object
+          description: Arbitrary JSON metadata (excluded from signature).
+        sign:
+          type: string
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        receipt_id:
+          type: string
+        outlet_name:
+          type: string
+        total_amount_cents:
+          type: integer
+        payment_type:
+          type: string
+        payment_type_variant:
+          type: string
+        currency:
+          type: string
+        outlet_id:
+          type: integer
+        mid:
+          type: string
+        omni_reference:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending_payment
+          - payment_processing
+          - successful
+          - disputed
+          - rejected
+          - refunded
+        status_code:
+          type: integer
+          description: 0 pending_payment, 1 payment_processing, 2 successful, 3 disputed, 4 rejected, 5 refunded.
+        created_at:
+          type: string
+        charged_amount_cents:
+          type: integer
+        campaign_credit_amount_cents:
+          type: integer
+        campaign_funded_by:
+          type: string
+        aabig_points_used_amount_cents:
+          type: integer
+        merchant_cashback_amount_cents:
+          type: integer
+        fave_credits_amount_cents:
+          type: integer
+        promo_code_value_cents:
+          type: integer
+        e_card_credits_used_cents:
+          type: integer
+        cashback_rate:
+          type: number
+        merchant_cashback_issued_cents:
+          type: integer
+        promo_code:
+          type: string
+        promo_code_cashback_value:
+          type: number
+        promo_code_cashback_type:
+          type: string
+        promo_code_cashback_issued_cents:
+          type: integer
+        promo_code_cashback_funded_by:
+          type: string
+        fave_fees_percentage:
+          type: number
+        fave_fees_cents:
+          type: integer
+        sst_on_total_fees_cents:
+          type: integer
+        merchant_takeback_cents:
+          type: integer
+        refund_amount_cents:
+          type: integer
+        user_id:
+          type: string
+        fpl_transaction:
+          type: boolean
+        fpl_fees_percentage:
+          type: number
+        fpl_fees_cents:
+          type: integer
+        fpl_merchant_cashback_reduction_percentage:
+          type: number
+        sign:
+          type: string
+          description: Present on webhook callback payloads for verification.
+    CreateQrCodeRequest:
+      type: object
+      required:
+      - omni_reference
+      - total_amount_cents
+      - app_id
+      - outlet_id
+      - sign
+      properties:
+        omni_reference:
+          type: string
+          maxLength: 28
+          description: Partner reference, format "[prefix]-[id]".
+        total_amount_cents:
+          type: integer
+          description: Positive amount in cents. SG max 1999900.
+        app_id:
+          type: string
+        outlet_id:
+          type: integer
+        format:
+          type: string
+          default: base64
+          enum:
+          - txt
+          - base64
+          - web_url
+          - grab
+          - paynow
+          - alipay
+          - wcp
+          - shopeepay
+          - atome
+        redirect_url:
+          type: string
+          description: Customer return URL for web_url format.
+        callback_url:
+          type: string
+          description: Per-payment webhook override.
+        payment_option:
+          type: string
+          default: both
+          enum:
+          - both
+          - app
+          - pwa
+        expiry_time:
+          type: integer
+          description: Unix timestamp when the code expires.
+        shopper_details:
+          type: object
+          properties:
+            email:
+              type: string
+            phone:
+              type: string
+            location:
+              type: string
+        test:
+          type: boolean
+          description: Enable test payments when supported.
+        sign:
+          type: string
+    CreateQrCodeResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Payment URL or QR payload.
+        format:
+          type: string
+        expires_in:
+          type: integer
+          description: Seconds until expiry.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Machine-readable error code (e.g. validation, stale_transaction, resource_not_found, provider, internal_error, unexpected_error, failed_request, already_refunded).
+        message:
+          type: string
+  securitySchemes:
+    hmacSignature:
+      type: apiKey
+      in: query
+      name: sign
+      description: HMAC-SHA256 signature computed over the URL-encoded request fields in submission order (excluding sign and country_code, and excluding outlet_id on list, id on acknowledge, and details on merchant scan), keyed by the secret Fave issued for the integration. On POST requests the signature is passed as the sign field in the request body.
