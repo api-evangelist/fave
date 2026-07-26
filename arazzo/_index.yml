@@ -1,0 +1,12 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/fave-favepay-omni-openapi.yml
+workflows:
+  - file: fave-accept-and-refund.yml
+    workflowId: acceptAndRefund
+    title: Accept a FavePay Omni payment and refund it
+    summary: Create a QR-code charge, confirm success via lookup, then refund it.
+  - file: fave-scan-and-reconcile.yml
+    workflowId: scanAndReconcile
+    title: Merchant-scan charge and reconcile
+    summary: Charge via merchant scan, list outlet transactions, acknowledge the new one.

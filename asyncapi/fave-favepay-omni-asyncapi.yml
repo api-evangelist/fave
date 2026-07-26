@@ -1,0 +1,84 @@
+asyncapi: 3.0.0
+info:
+  title: FavePay Omni Webhooks
+  version: v1
+  description: >-
+    Webhook (callback) event surface for FavePay Omni. Fave POSTs the transaction
+    object to the partner's callback_url whenever a transaction changes status.
+    Each payload carries a `sign` (HMAC-SHA256) field the partner must verify.
+    Faithfully generated from Fave's published FavePay Omni documentation; no
+    provider-published AsyncAPI was found.
+  x-apievangelist:
+    generated: '2026-07-19'
+    method: generated
+    source: https://developers.myfave.com/fpo-guide.html
+defaultContentType: application/json
+channels:
+  transactionStatus:
+    address: '{callback_url}'
+    parameters:
+      callback_url:
+        description: Partner-supplied HTTPS endpoint (configured or per-payment override).
+    messages:
+      transactionStatusChanged:
+        $ref: '#/components/messages/transactionStatusChanged'
+operations:
+  receiveTransactionStatus:
+    action: receive
+    channel:
+      $ref: '#/channels/transactionStatus'
+    summary: Receive a transaction status-change callback from Fave.
+    messages:
+      - $ref: '#/channels/transactionStatus/messages/transactionStatusChanged'
+components:
+  messages:
+    transactionStatusChanged:
+      name: transactionStatusChanged
+      title: Transaction status changed
+      contentType: application/json
+      summary: Emitted when a transaction transitions status.
+      payload:
+        $ref: '#/components/schemas/TransactionCallback'
+  schemas:
+    TransactionCallback:
+      type: object
+      properties:
+        id:
+          type: string
+        receipt_id:
+          type: string
+        outlet_name:
+          type: string
+        total_amount_cents:
+          type: integer
+        payment_type:
+          type: string
+        payment_type_variant:
+          type: string
+        currency:
+          type: string
+        outlet_id:
+          type: integer
+        mid:
+          type: string
+        omni_reference:
+          type: string
+        status:
+          type: string
+          enum: [pending_payment, payment_processing, successful, disputed, rejected, refunded]
+        status_code:
+          type: integer
+          enum: [0, 1, 2, 3, 4, 5]
+        created_at:
+          type: string
+        charged_amount_cents:
+          type: integer
+        merchant_takeback_cents:
+          type: integer
+        user_id:
+          type: string
+        fpl_transaction:
+          type: boolean
+        sign:
+          type: string
+          description: HMAC-SHA256 signature to verify before processing.

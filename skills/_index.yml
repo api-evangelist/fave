@@ -1,0 +1,16 @@
+generated: '2026-07-19'
+method: generated
+source: openapi/fave-favepay-omni-openapi.yml
+skills:
+  - file: fave-accept-qr-payment.md
+    name: Accept a FavePay Omni QR payment
+    api: openapi/fave-favepay-omni-openapi.yml
+    operations: [createQrCode, getTransaction]
+  - file: fave-merchant-scan-charge.md
+    name: Charge via merchant scan
+    api: openapi/fave-favepay-omni-openapi.yml
+    operations: [merchantScan, getTransaction]
+  - file: fave-refund-and-reconcile.md
+    name: Refund and reconcile transactions
+    api: openapi/fave-favepay-omni-openapi.yml
+    operations: [refundTransaction, listOutletTransactions, acknowledgeTransaction, getTransaction]

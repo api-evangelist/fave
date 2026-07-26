@@ -1,0 +1,16 @@
+{
+  "provider": "fave",
+  "sources": [
+    "fave-payments-api-openapi.yml",
+    "fave-transactions-api-openapi.yml"
+  ],
+  "outputs": [
+    "fave-payments-api-openapi.yml",
+    "fave-transactions-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

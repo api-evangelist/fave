@@ -1,0 +1,20 @@
+generated: '2026-07-19'
+method: searched
+source: https://developers.myfave.com/fpo-guide.html
+versioning:
+  scheme: uri-path
+  current: v1
+  path_segment: /api/fpo/v1/
+  markets_in_path: [MY, SG, ID]
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No public deprecation policy or RFC 8594 Sunset/Deprecation header support documented.
+sla:
+  url: null
+  uptime_target: null
+status_page: null
+deprecated_operations: []
+notes: >-
+  FavePay Omni exposes a single stable v1 surface. No public status page,
+  deprecation policy, or SLA was found on the developer docs.

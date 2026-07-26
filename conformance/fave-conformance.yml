@@ -1,0 +1,29 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/fave-favepay-omni-openapi.yml
+standards:
+  - id: oauth2
+    conforms: false
+    evidence: No oauth2 securityScheme; auth is HMAC-SHA256 request signing.
+  - id: oidc
+    conforms: false
+  - id: hmac-request-signing
+    conforms: true
+    evidence: Every request signed with HMAC-SHA256 (sign field) over ordered request fields.
+  - id: webhook-signature-verification
+    conforms: true
+    evidence: Callback payloads carry a sign field for HMAC verification.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Custom error envelope ({error, message}), not application/problem+json.
+  - id: json-api
+    conforms: false
+  - id: pagination
+    conforms: true
+    evidence: listOutletTransactions supports limit + timestamp window (max ~31 days).
+  - id: idempotency
+    conforms: false
+    evidence: No idempotency-key header documented.
+compliance_program:
+  published: false
+  note: No public SOC 2 / ISO 27001 / PCI DSS trust page found on the developer surface.

@@ -1,0 +1,24 @@
+# Fave
+
+> Fave is a Malaysia- and Singapore-based lifestyle and payments app (deals, cashback, rewards, eCards, and QR payments) owned by Pine Labs. Its FavePay Omni (FPO) partner API lets merchants and platforms accept in-store and online payments via QR codes or merchant scans, look up and reconcile transactions, issue refunds, and receive signed webhook callbacks. Operates across Malaysia (MY), Singapore (SG), and Indonesia (ID).
+
+## APIs
+- [FavePay Omni (FPO) API](https://developers.myfave.com/fpo-guide.html): Partner payment API — create QR codes / payment URLs, process customer-presented (merchant-scan) charges, look up/list/acknowledge transactions, and refund. HMAC-SHA256 request signing.
+
+## Specs
+- [OpenAPI 3.1 (FavePay Omni)](https://raw.githubusercontent.com/api-evangelist/fave/refs/heads/main/openapi/fave-favepay-omni-openapi.yml)
+- [AsyncAPI 3.0 (webhooks)](https://raw.githubusercontent.com/api-evangelist/fave/refs/heads/main/asyncapi/fave-favepay-omni-asyncapi.yml)
+
+## Docs
+- [Fave Partner Documentation](https://developers.myfave.com/)
+- [FavePay Omni guide](https://developers.myfave.com/fpo-guide.html)
+- [Fave Help Center](https://help.myfave.com/hc/en-us)
+- [FaveBiz (merchant portal)](https://www.favebiz.com/)
+- [FaveBiz blog](https://www.favebiz.com/blog/)
+
+## Artifacts
+- [Authentication (HMAC-SHA256 signing)](https://raw.githubusercontent.com/api-evangelist/fave/refs/heads/main/authentication/fave-authentication.yml)
+- [Conventions](https://raw.githubusercontent.com/api-evangelist/fave/refs/heads/main/conventions/fave-conventions.yml)
+- [Error catalog](https://raw.githubusercontent.com/api-evangelist/fave/refs/heads/main/errors/fave-problem-types.yml)
+- [Webhooks catalog](https://raw.githubusercontent.com/api-evangelist/fave/refs/heads/main/asyncapi/fave-favepay-omni-webhooks.yml)
+- [Data model](https://raw.githubusercontent.com/api-evangelist/fave/refs/heads/main/data-model/fave-data-model.yml)

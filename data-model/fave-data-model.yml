@@ -1,0 +1,39 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/fave-favepay-omni-openapi.yml
+entities:
+  - name: Outlet
+    id_field: outlet_id
+    description: A merchant location/store linked to the integration (app_id).
+    fields: [outlet_id, outlet_name, mid]
+  - name: QrCode
+    description: A single-use QR code or payment URL created for a charge.
+    fields: [code, format, expires_in, omni_reference, total_amount_cents]
+  - name: Transaction
+    id_field: id
+    alt_keys: [receipt_id, omni_reference]
+    description: A payment/refund record moving through the FavePay Omni status lifecycle.
+    fields: [id, receipt_id, omni_reference, status, status_code, total_amount_cents, charged_amount_cents, refund_amount_cents, currency, payment_type, created_at, user_id]
+  - name: User
+    id_field: user_id
+    description: The Fave app customer who paid.
+relationships:
+  - from: Transaction
+    to: Outlet
+    type: belongs_to
+    via: outlet_id
+  - from: Transaction
+    to: User
+    type: belongs_to
+    via: user_id
+  - from: QrCode
+    to: Transaction
+    type: has_one
+    via: omni_reference
+  - from: Outlet
+    to: Transaction
+    type: has_many
+    via: outlet_id
+correlation_key:
+  field: omni_reference
+  note: Partner-supplied reference correlating a QrCode/charge across create, lookup, acknowledge and refund.

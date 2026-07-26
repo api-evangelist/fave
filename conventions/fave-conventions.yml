@@ -1,0 +1,50 @@
+generated: '2026-07-19'
+method: searched
+source: https://developers.myfave.com/fpo-guide.html
+api: openapi/fave-favepay-omni-openapi.yml
+authentication:
+  style: hmac-signature
+  detail: >-
+    HMAC-SHA256 over URL-encoded request fields in submission order, keyed by the
+    partner secret; passed as `sign`.
+  ref: authentication/fave-authentication.yml
+idempotency:
+  supported: false
+  note: >-
+    Not documented. The API has no idempotency-key header. Uniqueness is carried
+    by the partner-supplied `omni_reference` (format "[prefix]-[id]", max 28
+    chars), which correlates a payment across create, lookup, acknowledge and
+    refund, but the docs do not describe safe-retry semantics.
+pagination:
+  style: timestamp-window
+  applies_to: listOutletTransactions
+  params:
+    limit: Maximum records; max 1000, default 10.
+    timestamp: Unix-seconds lower bound; lookback capped at ~31 days; defaults to 30 days ago when only limit is set.
+    ack: When false, returns only unacknowledged transactions.
+  response: JSON array of transaction objects, most recent first.
+amounts:
+  convention: All monetary values are integer minor units (cents) in fields suffixed `_cents`.
+  currency_field: currency
+  market_caps:
+    SG_total_amount_cents_max: 1999900
+reference_field:
+  name: omni_reference
+  format: "[prefix]-[id]"
+  max_length: 28
+  role: partner-supplied idempotent-ish correlation key across the transaction lifecycle.
+markets:
+  path_param: country_code
+  values: [MY, SG, ID]
+error_envelope:
+  shape: '{ "error": "<code>", "message": "<human readable>" }'
+  format: custom (not RFC 9457 problem+json)
+  ref: errors/fave-problem-types.yml
+webhooks:
+  signing: Callback payload includes a `sign` field; verify before processing.
+  ack_contract: Respond with any HTTP status < 400 quickly, then process asynchronously.
+  override: Per-payment `callback_url` on create/scan overrides the configured endpoint.
+  ref: asyncapi/fave-favepay-omni-webhooks.yml
+rate_limits:
+  documented: false
+lifecycle_ref: lifecycle/fave-lifecycle.yml

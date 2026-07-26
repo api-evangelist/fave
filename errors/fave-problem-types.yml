@@ -1,0 +1,50 @@
+generated: '2026-07-19'
+method: searched
+source: https://developers.myfave.com/fpo-guide.html
+derived_from: openapi/fave-favepay-omni-openapi.yml
+format: custom
+envelope:
+  shape: '{ "error": "<code>", "message": "<human readable>" }'
+  field: error
+  note: Fave returns a machine-readable `error` code (not RFC 9457 problem+json).
+problems:
+  - status: 400
+    code: validation
+    title: Invalid parameters
+    remediation: Check required fields, formats and the omni_reference pattern.
+  - status: 400
+    code: stale_transaction
+    title: Refund outside allowed window
+    remediation: Refunds are typically allowed only on the same calendar day as the payment.
+  - status: 401
+    code: Unauthorized
+    title: Invalid signature or outlet not linked
+    remediation: Recompute the HMAC-SHA256 sign in submission order; confirm the outlet is linked to the app_id.
+  - status: 404
+    code: resource_not_found
+    title: Unknown app_id or missing transaction
+    remediation: Verify app_id and the omni_reference / receipt_id.
+  - status: 404
+    code: error
+    title: Empty transaction history
+    remediation: No transactions in the requested window; widen the timestamp lower bound.
+  - status: 422
+    code: provider
+    title: Unsupported format or provider rejection
+    remediation: Use a supported `format`; the downstream payment provider rejected the request.
+  - status: 500
+    code: internal_error
+    title: Server failure
+    remediation: Retry later; contact Fave partner support if persistent.
+  - status: 500
+    code: unexpected_error
+    title: Unexpected server failure
+    remediation: Retry later; contact Fave partner support if persistent.
+  - status: 200
+    code: already_refunded
+    title: Transaction already refunded
+    remediation: Returns HTTP 200 with the transaction object; no further action needed.
+  - status: 400
+    code: failed_request
+    title: Request failed
+    remediation: Inspect the accompanying message for the specific failure.

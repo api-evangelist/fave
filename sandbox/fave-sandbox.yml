@@ -1,0 +1,24 @@
+generated: '2026-07-19'
+method: searched
+source: https://developers.myfave.com/fpo-guide.html
+environments:
+  production:
+    base_url: https://omni.myfave.com
+  sandbox:
+    base_url: https://omni.dino.fave.ninja
+    description: Fave test/sandbox host for FavePay Omni.
+credentials:
+  provisioning: >-
+    App ID and HMAC secret key are provisioned by Fave during partner
+    onboarding; there are no self-serve or publicly published test keys.
+test_mode:
+  field: test
+  applies_to: createQrCode
+  description: >-
+    Optional boolean `test` on QR-code creation enables a test payment without
+    the Fave app "when supported".
+test_values:
+  published: false
+  note: >-
+    Fave does not publish static magic test card / QR values; test transactions
+    run against the provisioned sandbox integration.

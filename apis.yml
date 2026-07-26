@@ -1,20 +1,77 @@
 aid: fave
 name: Fave
-description: Fave is a company surfaced as a portfolio company of 500-global and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Fave is a Malaysia- and Singapore-based lifestyle and payments app offering
+  deals, cashback, rewards, eCards, and QR-code payments, operated by Fave Asia
+  Technologies and owned by Pine Labs. For merchants and platforms, Fave exposes
+  the FavePay Omni (FPO) partner API: create single-use QR codes or payment URLs,
+  process customer-presented (merchant-scan) charges, look up, list, and
+  acknowledge transactions, issue full or partial refunds, and receive signed
+  webhook callbacks on every status change. Every request is signed with
+  HMAC-SHA256 using a secret key Fave issues during partner onboarding. FavePay
+  Omni operates across Malaysia (MY), Singapore (SG), and Indonesia (ID).
 url: https://raw.githubusercontent.com/api-evangelist/fave/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - 500-global
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: profiled
+x-tier-reason: enriched-api-provider
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://myfave.com/banner.png
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
 - Company
-apis: []
+- Payments
+- Fintech
+- QR Payments
+- Loyalty
+- Cashback
+- Merchant Services
+- Southeast Asia
+- Webhooks
+apis:
+- aid: fave:fave-payments-api
+  name: Fave Payments API
+  description: Create charges via QR code or merchant scan.
+  humanURL: https://developers.myfave.com/fpo-guide.html
+  baseURL: https://omni.myfave.com
+  tags:
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/fave-payments-api-openapi.yml
+  - type: Documentation
+    url: https://developers.myfave.com/fpo-guide.html
+  - type: AsyncAPI
+    url: asyncapi/fave-favepay-omni-asyncapi.yml
+- aid: fave:fave-transactions-api
+  name: Fave Transactions API
+  description: Look up, list, acknowledge and refund transactions.
+  humanURL: https://developers.myfave.com/fpo-guide.html
+  baseURL: https://omni.myfave.com
+  tags:
+  - Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/fave-transactions-api-openapi.yml
+  - type: Documentation
+    url: https://developers.myfave.com/fpo-guide.html
+  - type: AsyncAPI
+    url: asyncapi/fave-favepay-omni-asyncapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -23,3 +80,64 @@ maintainers:
 common:
 - type: Website
   url: https://myfave.com
+- type: DeveloperPortal
+  url: https://developers.myfave.com/
+- type: Documentation
+  url: https://developers.myfave.com/
+- type: APIReference
+  url: https://developers.myfave.com/fpo-guide.html
+- type: Support
+  url: https://help.myfave.com/hc/en-us
+- type: Blog
+  url: https://www.favebiz.com/blog/
+- type: SignUp
+  url: https://app.favebiz.com/sign-up?ref=favebiz
+- type: Login
+  url: https://app.favebiz.com/?ref=favebiz
+- type: TermsOfService
+  url: https://help.myfave.com/hc/en-us/sections/205050988-Terms-of-Use
+- type: PrivacyPolicy
+  url: https://help.myfave.com/hc/en-us/sections/205051008-Privacy-Policy
+- type: Authentication
+  url: authentication/fave-authentication.yml
+- type: OpenAPI
+  url: openapi/fave-favepay-omni-openapi.yml
+- type: AsyncAPI
+  url: asyncapi/fave-favepay-omni-asyncapi.yml
+- type: Webhooks
+  url: asyncapi/fave-favepay-omni-webhooks.yml
+- type: Conventions
+  url: conventions/fave-conventions.yml
+- type: ErrorCatalog
+  url: errors/fave-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/fave-lifecycle.yml
+- type: Sandbox
+  url: sandbox/fave-sandbox.yml
+- type: Conformance
+  url: conformance/fave-conformance.yml
+- type: DataModel
+  url: data-model/fave-data-model.yml
+- type: MCPServer
+  url: mcp/fave-mcp.yml
+- type: Overlay
+  url: overlays/fave-favepay-omni-overlay.yaml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/fave-llms.txt
+- type: Arazzo
+  name: Accept a FavePay Omni payment and refund it
+  url: arazzo/fave-accept-and-refund.yml
+- type: Arazzo
+  name: Merchant-scan charge and reconcile
+  url: arazzo/fave-scan-and-reconcile.yml
+- type: AgenticAccess
+  url: agentic-access/fave-agentic-access.yml
+- type: DomainSecurity
+  url: security/fave-domain-security.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

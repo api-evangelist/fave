@@ -1,0 +1,86 @@
+arazzo: 1.0.1
+info:
+  title: Merchant-scan charge and reconcile
+  version: 1.0.0
+  description: >-
+    Charge a customer via merchant scan, then list the outlet's recent
+    transactions and acknowledge the new one. All operationIds are verified
+    against the FavePay Omni OpenAPI.
+sourceDescriptions:
+  - name: favepayOmni
+    url: ../openapi/fave-favepay-omni-openapi.yml
+    type: openapi
+workflows:
+  - workflowId: scanAndReconcile
+    summary: Merchant-scan charge, list outlet transactions, acknowledge.
+    inputs:
+      type: object
+      required: [country_code, app_id, outlet_id, omni_reference, total_amount_cents, code, sign]
+      properties:
+        country_code: { type: string }
+        app_id: { type: string }
+        outlet_id: { type: integer }
+        omni_reference: { type: string }
+        total_amount_cents: { type: integer }
+        code: { type: string }
+        sign: { type: string }
+    steps:
+      - stepId: scanCharge
+        operationId: merchantScan
+        parameters:
+          - name: country_code
+            in: path
+            value: $inputs.country_code
+        requestBody:
+          contentType: application/json
+          payload:
+            omni_reference: $inputs.omni_reference
+            total_amount_cents: $inputs.total_amount_cents
+            app_id: $inputs.app_id
+            outlet_id: $inputs.outlet_id
+            code: $inputs.code
+            sign: $inputs.sign
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          txn_id: $response.body#/id
+      - stepId: listRecent
+        operationId: listOutletTransactions
+        parameters:
+          - name: country_code
+            in: path
+            value: $inputs.country_code
+          - name: outlet_id
+            in: path
+            value: $inputs.outlet_id
+          - name: app_id
+            in: query
+            value: $inputs.app_id
+          - name: ack
+            in: query
+            value: false
+          - name: sign
+            in: query
+            value: $inputs.sign
+        successCriteria:
+          - condition: $statusCode == 200
+      - stepId: acknowledge
+        operationId: acknowledgeTransaction
+        parameters:
+          - name: country_code
+            in: path
+            value: $inputs.country_code
+          - name: id
+            in: path
+            value: $steps.scanCharge.outputs.txn_id
+        requestBody:
+          contentType: application/json
+          payload:
+            omni_reference: $inputs.omni_reference
+            app_id: $inputs.app_id
+            outlet_id: $inputs.outlet_id
+            sign: $inputs.sign
+        successCriteria:
+          - condition: $statusCode == 200
+    outputs:
+      transaction_id: $steps.scanCharge.outputs.txn_id

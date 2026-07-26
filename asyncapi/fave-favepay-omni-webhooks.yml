@@ -1,0 +1,48 @@
+generated: '2026-07-19'
+method: searched
+source: https://developers.myfave.com/fpo-guide.html
+type: Webhooks
+api: openapi/fave-favepay-omni-openapi.yml
+delivery:
+  transport: HTTP POST
+  target: callback_url (configured, or per-payment override on create/scan)
+  ack: Respond with any HTTP status < 400 quickly, then process asynchronously.
+  signing: Payload includes a `sign` field; verify HMAC before processing.
+events:
+  - status: pending_payment
+    status_code: 0
+    description: Payment created, awaiting customer action.
+  - status: payment_processing
+    status_code: 1
+    description: Payment is being processed.
+  - status: successful
+    status_code: 2
+    description: Payment completed successfully.
+  - status: disputed
+    status_code: 3
+    description: Payment is under dispute.
+  - status: rejected
+    status_code: 4
+    description: Payment was rejected.
+  - status: refunded
+    status_code: 5
+    description: Payment was refunded.
+payload_fields:
+  - id
+  - receipt_id
+  - outlet_name
+  - total_amount_cents
+  - payment_type
+  - payment_type_variant
+  - currency
+  - outlet_id
+  - mid
+  - omni_reference
+  - status
+  - status_code
+  - created_at
+  - charged_amount_cents
+  - merchant_takeback_cents
+  - user_id
+  - fpl_transaction
+  - sign
