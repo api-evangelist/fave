@@ -101,7 +101,7 @@ common:
 - type: Authentication
   url: authentication/fave-authentication.yml
 - type: OpenAPI
-  url: openapi/fave-favepay-omni-openapi.yml
+  url: openapi/_original/fave-favepay-omni-openapi.yml
 - type: AsyncAPI
   url: asyncapi/fave-favepay-omni-asyncapi.yml
 - type: Webhooks
