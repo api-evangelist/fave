@@ -1,0 +1,177 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FavePay Omni (FPO) Payments Transactions API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "sign",
+      "value": "{{sign}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a transaction by reference or receipt ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://omni.myfave.com/api/fpo/v1/:country_code/transactions",
+            "params": [
+              {
+                "name": "country_code",
+                "value": "",
+                "type": "path",
+                "description": "Market the request targets."
+              },
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "omni_reference",
+                "value": "",
+                "type": "query",
+                "description": "Required if receipt_id is not supplied."
+              },
+              {
+                "name": "receipt_id",
+                "value": "",
+                "type": "query",
+                "description": "Required if omni_reference is not supplied."
+              },
+              {
+                "name": "outlet_id",
+                "value": "",
+                "type": "query",
+                "description": "If supplied, must match the payment's outlet."
+              },
+              {
+                "name": "sign",
+                "value": "",
+                "type": "query",
+                "description": "HMAC-SHA256 signature over the request fields."
+              }
+            ]
+          },
+          "docs": "Look up a single transaction by either omni_reference or receipt_id."
+        },
+        {
+          "info": {
+            "name": "Refund a successful payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://omni.myfave.com/api/fpo/v1/:country_code/transactions",
+            "params": [
+              {
+                "name": "country_code",
+                "value": "",
+                "type": "path",
+                "description": "Market the request targets."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Issues a full or partial refund against a successful payment. Refunds are typically allowed only on the same calendar day as the payment; later attempts return stale_transaction. Partial refunds cannot exceed charged_amount_cents and are unavailable for DuitNow/PayNow."
+        },
+        {
+          "info": {
+            "name": "Acknowledge a transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://omni.myfave.com/api/fpo/v1/:country_code/transactions/:id",
+            "params": [
+              {
+                "name": "country_code",
+                "value": "",
+                "type": "path",
+                "description": "Market the request targets."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Marks a transaction as acknowledged so it is excluded from the unacknowledged list feed."
+        },
+        {
+          "info": {
+            "name": "List recent transactions for an outlet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://omni.myfave.com/api/fpo/v1/:country_code/outlets/:outlet_id/transactions",
+            "params": [
+              {
+                "name": "country_code",
+                "value": "",
+                "type": "path",
+                "description": "Market the request targets."
+              },
+              {
+                "name": "outlet_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum records to return. Max 1000, default 10."
+              },
+              {
+                "name": "timestamp",
+                "value": "",
+                "type": "query",
+                "description": "Unix timestamp (seconds) lower bound. Not earlier than ~31 days ago. When only limit is set, defaults to 30 days ago."
+              },
+              {
+                "name": "ack",
+                "value": "",
+                "type": "query",
+                "description": "true (default) returns all transactions; false returns only unacknowledged transactions."
+              },
+              {
+                "name": "sign",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns recent transactions for an outlet, most recent first. Supports a lookback window of up to ~31 days."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

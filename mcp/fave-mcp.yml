@@ -2,28 +2,33 @@ generated: '2026-07-19'
 method: derived
 source: openapi/fave-favepay-omni-openapi.yml
 status: candidate
-note: >-
-  No official Fave-hosted MCP server was found. This is a candidate tool list
-  derived one-to-one from the FavePay Omni OpenAPI operations.
+note: No official Fave-hosted MCP server was found. This is a candidate tool list derived one-to-one from
+  the FavePay Omni OpenAPI operations.
 server:
   name: fave-favepay-omni
   transport: http
 tools:
-  - name: create_qr_code
-    description: Create a single-use QR code or payment URL.
-    source_operation: openapi/fave-favepay-omni-openapi.yml#createQrCode
-  - name: merchant_scan
-    description: Charge a customer by processing a scanned QR/barcode.
-    source_operation: openapi/fave-favepay-omni-openapi.yml#merchantScan
-  - name: get_transaction
-    description: Retrieve a transaction by omni_reference or receipt_id.
-    source_operation: openapi/fave-favepay-omni-openapi.yml#getTransaction
-  - name: refund_transaction
-    description: Issue a full or partial refund.
-    source_operation: openapi/fave-favepay-omni-openapi.yml#refundTransaction
-  - name: acknowledge_transaction
-    description: Acknowledge a transaction so it drops from the unacknowledged feed.
-    source_operation: openapi/fave-favepay-omni-openapi.yml#acknowledgeTransaction
-  - name: list_outlet_transactions
-    description: List recent transactions for an outlet.
-    source_operation: openapi/fave-favepay-omni-openapi.yml#listOutletTransactions
+- name: create_qr_code
+  description: Create a single-use QR code or payment URL.
+  source_operation: openapi/fave-favepay-omni-openapi.yml#createQrCode
+- name: merchant_scan
+  description: Charge a customer by processing a scanned QR/barcode.
+  source_operation: openapi/fave-favepay-omni-openapi.yml#merchantScan
+- name: get_transaction
+  description: Retrieve a transaction by omni_reference or receipt_id.
+  source_operation: openapi/fave-favepay-omni-openapi.yml#getTransaction
+- name: refund_transaction
+  description: Issue a full or partial refund.
+  source_operation: openapi/fave-favepay-omni-openapi.yml#refundTransaction
+- name: acknowledge_transaction
+  description: Acknowledge a transaction so it drops from the unacknowledged feed.
+  source_operation: openapi/fave-favepay-omni-openapi.yml#acknowledgeTransaction
+- name: list_outlet_transactions
+  description: List recent transactions for an outlet.
+  source_operation: openapi/fave-favepay-omni-openapi.yml#listOutletTransactions
+deployment:
+  mode: none
+  verified: derived
+  tools: 6
+  checked: '2026-08-12'
+  source: catalog MCP census

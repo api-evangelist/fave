@@ -1,0 +1,889 @@
+{
+  "item": [
+    {
+      "id": "f350c5d6-1ea7-48c4-a52e-8c5a40f24aba",
+      "name": "Payments",
+      "description": {
+        "content": "Create charges via QR code or merchant scan.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "37906fdb-0bc9-4cff-a53f-bd96de6d5c33",
+          "name": "Create a single-use QR code or payment URL",
+          "request": {
+            "name": "Create a single-use QR code or payment URL",
+            "description": {
+              "content": "Creates a single-use QR code or payment URL the customer scans/opens to pay. Returns the payment payload in the requested format.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "fpo",
+                "v1",
+                ":country_code",
+                "qr_codes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "country_code",
+                  "description": "(Required) Market the request targets."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"sign\": \"<string>\",\n  \"format\": \"base64\",\n  \"redirect_url\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"payment_option\": \"both\",\n  \"expiry_time\": \"<integer>\",\n  \"shopper_details\": {\n    \"email\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"location\": \"<string>\"\n  },\n  \"test\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d07754c1-fd4d-463c-bb59-c90f58e4ef5a",
+              "name": "QR code / payment payload created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fpo",
+                    "v1",
+                    ":country_code",
+                    "qr_codes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sign",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) Market the request targets."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"sign\": \"<string>\",\n  \"format\": \"base64\",\n  \"redirect_url\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"payment_option\": \"both\",\n  \"expiry_time\": \"<integer>\",\n  \"shopper_details\": {\n    \"email\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"location\": \"<string>\"\n  },\n  \"test\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"format\": \"string\",\n  \"expires_in\": 7865\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e5b4afdd-bbd5-41ee-a5c0-8d2f36fadff0",
+              "name": "Invalid parameters (validation) or refund outside window (stale_transaction).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fpo",
+                    "v1",
+                    ":country_code",
+                    "qr_codes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sign",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) Market the request targets."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"sign\": \"<string>\",\n  \"format\": \"base64\",\n  \"redirect_url\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"payment_option\": \"both\",\n  \"expiry_time\": \"<integer>\",\n  \"shopper_details\": {\n    \"email\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"location\": \"<string>\"\n  },\n  \"test\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0772dc1f-eb48-4998-8e55-bc9cf071f264",
+              "name": "Invalid signature or outlet not linked to the integration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fpo",
+                    "v1",
+                    ":country_code",
+                    "qr_codes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sign",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) Market the request targets."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"sign\": \"<string>\",\n  \"format\": \"base64\",\n  \"redirect_url\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"payment_option\": \"both\",\n  \"expiry_time\": \"<integer>\",\n  \"shopper_details\": {\n    \"email\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"location\": \"<string>\"\n  },\n  \"test\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "508385e6-8306-497a-82b3-344679047fd5",
+              "name": "Unknown app_id, missing transaction, or empty transaction history.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fpo",
+                    "v1",
+                    ":country_code",
+                    "qr_codes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sign",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) Market the request targets."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"sign\": \"<string>\",\n  \"format\": \"base64\",\n  \"redirect_url\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"payment_option\": \"both\",\n  \"expiry_time\": \"<integer>\",\n  \"shopper_details\": {\n    \"email\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"location\": \"<string>\"\n  },\n  \"test\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "303c05c9-d3b7-4799-a787-8be10bbfa55b",
+              "name": "Unsupported format or provider rejection.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fpo",
+                    "v1",
+                    ":country_code",
+                    "qr_codes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sign",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) Market the request targets."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"sign\": \"<string>\",\n  \"format\": \"base64\",\n  \"redirect_url\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"payment_option\": \"both\",\n  \"expiry_time\": \"<integer>\",\n  \"shopper_details\": {\n    \"email\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"location\": \"<string>\"\n  },\n  \"test\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "52256aeb-39f0-42e9-a44b-77d7987731aa",
+              "name": "Server failure (internal_error / unexpected_error).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fpo",
+                    "v1",
+                    ":country_code",
+                    "qr_codes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sign",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) Market the request targets."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"sign\": \"<string>\",\n  \"format\": \"base64\",\n  \"redirect_url\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"payment_option\": \"both\",\n  \"expiry_time\": \"<integer>\",\n  \"shopper_details\": {\n    \"email\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"location\": \"<string>\"\n  },\n  \"test\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2271744f-0d60-4619-b448-ae83046d4a2a",
+          "name": "Process a customer-presented QR / barcode (merchant scan)",
+          "request": {
+            "name": "Process a customer-presented QR / barcode (merchant scan)",
+            "description": {
+              "content": "Charges a customer by processing the QR or barcode payload the merchant scanned from the customer's Fave app.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "fpo",
+                "v1",
+                ":country_code",
+                "merchant_scan"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "country_code",
+                  "description": "(Required) Market the request targets."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"code\": \"<string>\",\n  \"sign\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"details\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "77761266-00f5-42ac-8fcd-323003b66785",
+              "name": "Charge processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fpo",
+                    "v1",
+                    ":country_code",
+                    "merchant_scan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sign",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) Market the request targets."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"code\": \"<string>\",\n  \"sign\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"details\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"receipt_id\": \"string\",\n  \"outlet_name\": \"string\",\n  \"total_amount_cents\": 465,\n  \"payment_type\": \"string\",\n  \"payment_type_variant\": \"string\",\n  \"currency\": \"string\",\n  \"outlet_id\": 2064,\n  \"mid\": \"string\",\n  \"omni_reference\": \"string\",\n  \"status\": \"successful\",\n  \"status_code\": 9319,\n  \"created_at\": \"string\",\n  \"charged_amount_cents\": 1088,\n  \"campaign_credit_amount_cents\": 7588,\n  \"campaign_funded_by\": \"string\",\n  \"aabig_points_used_amount_cents\": 4833,\n  \"merchant_cashback_amount_cents\": 9642,\n  \"fave_credits_amount_cents\": 8625,\n  \"promo_code_value_cents\": 22,\n  \"e_card_credits_used_cents\": 464,\n  \"cashback_rate\": 8830.850465996062,\n  \"merchant_cashback_issued_cents\": 8031,\n  \"promo_code\": \"string\",\n  \"promo_code_cashback_value\": 4082.73457575024,\n  \"promo_code_cashback_type\": \"string\",\n  \"promo_code_cashback_issued_cents\": 3462,\n  \"promo_code_cashback_funded_by\": \"string\",\n  \"fave_fees_percentage\": 519.8632193987329,\n  \"fave_fees_cents\": 4729,\n  \"sst_on_total_fees_cents\": 7112,\n  \"merchant_takeback_cents\": 1115,\n  \"refund_amount_cents\": 6638,\n  \"user_id\": \"string\",\n  \"fpl_transaction\": false,\n  \"fpl_fees_percentage\": 8154.029118624293,\n  \"fpl_fees_cents\": 3189,\n  \"fpl_merchant_cashback_reduction_percentage\": 6272.792298924116,\n  \"sign\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "34b02550-500b-4d3a-b8ab-d702c89ebc96",
+              "name": "Invalid parameters (validation) or refund outside window (stale_transaction).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fpo",
+                    "v1",
+                    ":country_code",
+                    "merchant_scan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sign",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) Market the request targets."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"code\": \"<string>\",\n  \"sign\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"details\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f8c0204e-1993-44f3-992b-0c43691acaf8",
+              "name": "Invalid signature or outlet not linked to the integration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fpo",
+                    "v1",
+                    ":country_code",
+                    "merchant_scan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sign",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) Market the request targets."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"code\": \"<string>\",\n  \"sign\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"details\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d9a54f79-f081-43b4-9b84-b04591cb168c",
+              "name": "Unknown app_id, missing transaction, or empty transaction history.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fpo",
+                    "v1",
+                    ":country_code",
+                    "merchant_scan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sign",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) Market the request targets."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"code\": \"<string>\",\n  \"sign\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"details\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "be70eb2a-6c6f-4fc1-9e5d-1a44f1ac9959",
+              "name": "Unsupported format or provider rejection.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fpo",
+                    "v1",
+                    ":country_code",
+                    "merchant_scan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sign",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) Market the request targets."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"code\": \"<string>\",\n  \"sign\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"details\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e20d803c-c821-4979-8195-e65e172c8a9f",
+              "name": "Server failure (internal_error / unexpected_error).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fpo",
+                    "v1",
+                    ":country_code",
+                    "merchant_scan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sign",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) Market the request targets."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"omni_reference\": \"<string>\",\n  \"total_amount_cents\": \"<integer>\",\n  \"app_id\": \"<string>\",\n  \"outlet_id\": \"<integer>\",\n  \"code\": \"<string>\",\n  \"sign\": \"<string>\",\n  \"callback_url\": \"<string>\",\n  \"details\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://omni.myfave.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "sign"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b8743363-29bf-456e-a492-a38f49c50d49",
+    "name": "FavePay Omni (FPO) Payments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "FavePay Omni is Fave's partner payment API for accepting payments online or in-store. Partners create single-use QR codes or payment URLs, process customer-presented (merchant-scan) QR/barcodes, look up and list transactions, acknowledge them, and issue full or partial refunds. Transaction status changes are delivered via signed webhook callbacks. Every request is signed with HMAC-SHA256 using a secret key Fave issues during partner onboarding. Operates across Malaysia (MY), Singapore (SG) and Indonesia (ID).\n\nContact Support:\n Name: Fave Partner Support",
+      "type": "text/plain"
+    }
+  }
+}

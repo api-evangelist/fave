@@ -1,0 +1,72 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FavePay Omni (FPO) Payments API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "sign",
+      "value": "{{sign}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a single-use QR code or payment URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://omni.myfave.com/api/fpo/v1/:country_code/qr_codes",
+            "params": [
+              {
+                "name": "country_code",
+                "value": "",
+                "type": "path",
+                "description": "Market the request targets."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a single-use QR code or payment URL the customer scans/opens to pay. Returns the payment payload in the requested format."
+        },
+        {
+          "info": {
+            "name": "Process a customer-presented QR / barcode (merchant scan)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://omni.myfave.com/api/fpo/v1/:country_code/merchant_scan",
+            "params": [
+              {
+                "name": "country_code",
+                "value": "",
+                "type": "path",
+                "description": "Market the request targets."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Charges a customer by processing the QR or barcode payload the merchant scanned from the customer's Fave app."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
