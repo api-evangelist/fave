@@ -42,6 +42,16 @@ tags:
 - Cashback
 - Merchant Services
 - Southeast Asia
+- Webhook
+tags_raw:
+- Company
+- Payments
+- Fintech
+- QR Payments
+- Loyalty
+- Cashback
+- Merchant Services
+- Southeast Asia
 - Webhooks
 apis:
 - aid: fave:fave-payments-api
@@ -64,6 +74,8 @@ apis:
   humanURL: https://developers.myfave.com/fpo-guide.html
   baseURL: https://omni.myfave.com
   tags:
+  - Transaction
+  tags_raw:
   - Transactions
   properties:
   - type: OpenAPI
