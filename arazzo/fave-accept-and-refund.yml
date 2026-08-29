@@ -7,72 +7,75 @@ info:
     issue a full refund. All operationIds are verified against the FavePay Omni
     OpenAPI.
 sourceDescriptions:
-  - name: favepayOmni
-    url: ../openapi/fave-favepay-omni-openapi.yml
-    type: openapi
+- name: paymentsApi
+  url: ../openapi/fave-payments-api-openapi.yml
+  type: openapi
+- name: transactionsApi
+  url: ../openapi/fave-transactions-api-openapi.yml
+  type: openapi
 workflows:
-  - workflowId: acceptAndRefund
-    summary: Create a charge, confirm success, then refund it.
-    inputs:
-      type: object
-      required: [country_code, app_id, outlet_id, omni_reference, total_amount_cents, sign]
-      properties:
-        country_code: { type: string }
-        app_id: { type: string }
-        outlet_id: { type: integer }
-        omni_reference: { type: string }
-        total_amount_cents: { type: integer }
-        sign: { type: string }
-    steps:
-      - stepId: createCharge
-        operationId: createQrCode
-        parameters:
-          - name: country_code
-            in: path
-            value: $inputs.country_code
-        requestBody:
-          contentType: application/json
-          payload:
-            omni_reference: $inputs.omni_reference
-            total_amount_cents: $inputs.total_amount_cents
-            app_id: $inputs.app_id
-            outlet_id: $inputs.outlet_id
-            sign: $inputs.sign
-        successCriteria:
-          - condition: $statusCode == 200
-      - stepId: confirmPayment
-        operationId: getTransaction
-        parameters:
-          - name: country_code
-            in: path
-            value: $inputs.country_code
-          - name: app_id
-            in: query
-            value: $inputs.app_id
-          - name: omni_reference
-            in: query
-            value: $inputs.omni_reference
-          - name: sign
-            in: query
-            value: $inputs.sign
-        successCriteria:
-          - condition: $statusCode == 200
-        outputs:
-          status: $response.body#/status
-      - stepId: refund
-        operationId: refundTransaction
-        parameters:
-          - name: country_code
-            in: path
-            value: $inputs.country_code
-        requestBody:
-          contentType: application/json
-          payload:
-            omni_reference: $inputs.omni_reference
-            app_id: $inputs.app_id
-            status: refunded
-            sign: $inputs.sign
-        successCriteria:
-          - condition: $statusCode == 200
+- workflowId: acceptAndRefund
+  summary: Create a charge, confirm success, then refund it.
+  inputs:
+    type: object
+    required: [country_code, app_id, outlet_id, omni_reference, total_amount_cents, sign]
+    properties:
+      country_code: {type: string}
+      app_id: {type: string}
+      outlet_id: {type: integer}
+      omni_reference: {type: string}
+      total_amount_cents: {type: integer}
+      sign: {type: string}
+  steps:
+  - stepId: createCharge
+    operationId: createQrCode
+    parameters:
+    - name: country_code
+      in: path
+      value: $inputs.country_code
+    requestBody:
+      contentType: application/json
+      payload:
+        omni_reference: $inputs.omni_reference
+        total_amount_cents: $inputs.total_amount_cents
+        app_id: $inputs.app_id
+        outlet_id: $inputs.outlet_id
+        sign: $inputs.sign
+    successCriteria:
+    - condition: $statusCode == 200
+  - stepId: confirmPayment
+    operationId: getTransaction
+    parameters:
+    - name: country_code
+      in: path
+      value: $inputs.country_code
+    - name: app_id
+      in: query
+      value: $inputs.app_id
+    - name: omni_reference
+      in: query
+      value: $inputs.omni_reference
+    - name: sign
+      in: query
+      value: $inputs.sign
+    successCriteria:
+    - condition: $statusCode == 200
     outputs:
-      confirmed_status: $steps.confirmPayment.outputs.status
+      status: $response.body#/status
+  - stepId: refund
+    operationId: refundTransaction
+    parameters:
+    - name: country_code
+      in: path
+      value: $inputs.country_code
+    requestBody:
+      contentType: application/json
+      payload:
+        omni_reference: $inputs.omni_reference
+        app_id: $inputs.app_id
+        status: refunded
+        sign: $inputs.sign
+    successCriteria:
+    - condition: $statusCode == 200
+  outputs:
+    confirmed_status: $steps.confirmPayment.outputs.status
