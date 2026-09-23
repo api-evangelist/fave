@@ -1,8 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: FavePay Omni (FPO) Payments Transactions API
+  title: FavePay Omni (FPO) Transactions API
   version: v1
-  description: FavePay Omni is Fave's partner payment API for accepting payments online or in-store. Partners create single-use QR codes or payment URLs, process customer-presented (merchant-scan) QR/barcodes, look up and list transactions, acknowledge them, and issue full or partial refunds. Transaction status changes are delivered via signed webhook callbacks. Every request is signed with HMAC-SHA256 using a secret key Fave issues during partner onboarding. Operates across Malaysia (MY), Singapore (SG) and Indonesia (ID).
+  description: FavePay Omni is Fave's partner payment API for accepting payments online or in-store.
   contact:
     name: Fave Partner Support
     url: https://developers.myfave.com/
@@ -197,6 +197,18 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
+    ValidationError:
+      description: Invalid parameters (validation) or refund outside window (stale_transaction).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Unknown app_id, missing transaction, or empty transaction history.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     InternalError:
       description: Server failure (internal_error / unexpected_error).
       content:
@@ -209,31 +221,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Unknown app_id, missing transaction, or empty transaction history.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: Invalid parameters (validation) or refund outside window (stale_transaction).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  parameters:
-    CountryCode:
-      name: country_code
-      in: path
-      required: true
-      description: Market the request targets.
-      schema:
-        type: string
-        enum:
-        - MY
-        - SG
-        - ID
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Machine-readable error code (e.g. validation, stale_transaction, resource_not_found, provider, internal_error, unexpected_error, failed_request, already_refunded).
+        message:
+          type: string
     RefundRequest:
       type: object
       required:
@@ -345,14 +341,6 @@ components:
         sign:
           type: string
           description: Present on webhook callback payloads for verification.
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Machine-readable error code (e.g. validation, stale_transaction, resource_not_found, provider, internal_error, unexpected_error, failed_request, already_refunded).
-        message:
-          type: string
     AcknowledgeRequest:
       type: object
       required:
@@ -369,6 +357,18 @@ components:
           type: integer
         sign:
           type: string
+  parameters:
+    CountryCode:
+      name: country_code
+      in: path
+      required: true
+      description: Market the request targets.
+      schema:
+        type: string
+        enum:
+        - MY
+        - SG
+        - ID
   securitySchemes:
     hmacSignature:
       type: apiKey

@@ -1,8 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: FavePay Omni (FPO) Payments API
   version: v1
-  description: FavePay Omni is Fave's partner payment API for accepting payments online or in-store. Partners create single-use QR codes or payment URLs, process customer-presented (merchant-scan) QR/barcodes, look up and list transactions, acknowledge them, and issue full or partial refunds. Transaction status changes are delivered via signed webhook callbacks. Every request is signed with HMAC-SHA256 using a secret key Fave issues during partner onboarding. Operates across Malaysia (MY), Singapore (SG) and Indonesia (ID).
+  description: FavePay Omni is Fave's partner payment API for accepting payments online or in-store.
   contact:
     name: Fave Partner Support
     url: https://developers.myfave.com/
@@ -88,6 +88,18 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
+    ValidationError:
+      description: Invalid parameters (validation) or refund outside window (stale_transaction).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Unknown app_id, missing transaction, or empty transaction history.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     InternalError:
       description: Server failure (internal_error / unexpected_error).
       content:
@@ -100,64 +112,93 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Unknown app_id, missing transaction, or empty transaction history.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: Invalid parameters (validation) or refund outside window (stale_transaction).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     UnprocessableEntity:
       description: Unsupported format or provider rejection.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    CountryCode:
-      name: country_code
-      in: path
-      required: true
-      description: Market the request targets.
-      schema:
-        type: string
-        enum:
-        - MY
-        - SG
-        - ID
   schemas:
-    MerchantScanRequest:
+    CreateQrCodeResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Payment URL or QR payload.
+        format:
+          type: string
+        expires_in:
+          type: integer
+          description: Seconds until expiry.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Machine-readable error code (e.g. validation, stale_transaction, resource_not_found, provider, internal_error, unexpected_error, failed_request, already_refunded).
+        message:
+          type: string
+    CreateQrCodeRequest:
       type: object
       required:
       - omni_reference
       - total_amount_cents
       - app_id
       - outlet_id
-      - code
       - sign
       properties:
         omni_reference:
           type: string
           maxLength: 28
+          description: Partner reference, format "[prefix]-[id]".
         total_amount_cents:
           type: integer
+          description: Positive amount in cents. SG max 1999900.
         app_id:
           type: string
         outlet_id:
           type: integer
-        code:
+        format:
           type: string
-          description: Customer QR or barcode payload.
+          default: base64
+          enum:
+          - txt
+          - base64
+          - web_url
+          - grab
+          - paynow
+          - alipay
+          - wcp
+          - shopeepay
+          - atome
+        redirect_url:
+          type: string
+          description: Customer return URL for web_url format.
         callback_url:
           type: string
-        details:
+          description: Per-payment webhook override.
+        payment_option:
+          type: string
+          default: both
+          enum:
+          - both
+          - app
+          - pwa
+        expiry_time:
+          type: integer
+          description: Unix timestamp when the code expires.
+        shopper_details:
           type: object
-          description: Arbitrary JSON metadata (excluded from signature).
+          properties:
+            email:
+              type: string
+            phone:
+              type: string
+            location:
+              type: string
+        test:
+          type: boolean
+          description: Enable test payments when supported.
         sign:
           type: string
     Transaction:
@@ -250,88 +291,47 @@ components:
         sign:
           type: string
           description: Present on webhook callback payloads for verification.
-    CreateQrCodeRequest:
+    MerchantScanRequest:
       type: object
       required:
       - omni_reference
       - total_amount_cents
       - app_id
       - outlet_id
+      - code
       - sign
       properties:
         omni_reference:
           type: string
           maxLength: 28
-          description: Partner reference, format "[prefix]-[id]".
         total_amount_cents:
           type: integer
-          description: Positive amount in cents. SG max 1999900.
         app_id:
           type: string
         outlet_id:
           type: integer
-        format:
-          type: string
-          default: base64
-          enum:
-          - txt
-          - base64
-          - web_url
-          - grab
-          - paynow
-          - alipay
-          - wcp
-          - shopeepay
-          - atome
-        redirect_url:
-          type: string
-          description: Customer return URL for web_url format.
-        callback_url:
-          type: string
-          description: Per-payment webhook override.
-        payment_option:
-          type: string
-          default: both
-          enum:
-          - both
-          - app
-          - pwa
-        expiry_time:
-          type: integer
-          description: Unix timestamp when the code expires.
-        shopper_details:
-          type: object
-          properties:
-            email:
-              type: string
-            phone:
-              type: string
-            location:
-              type: string
-        test:
-          type: boolean
-          description: Enable test payments when supported.
-        sign:
-          type: string
-    CreateQrCodeResponse:
-      type: object
-      properties:
         code:
           type: string
-          description: Payment URL or QR payload.
-        format:
+          description: Customer QR or barcode payload.
+        callback_url:
           type: string
-        expires_in:
-          type: integer
-          description: Seconds until expiry.
-    Error:
-      type: object
-      properties:
-        error:
+        details:
+          type: object
+          description: Arbitrary JSON metadata (excluded from signature).
+        sign:
           type: string
-          description: Machine-readable error code (e.g. validation, stale_transaction, resource_not_found, provider, internal_error, unexpected_error, failed_request, already_refunded).
-        message:
-          type: string
+  parameters:
+    CountryCode:
+      name: country_code
+      in: path
+      required: true
+      description: Market the request targets.
+      schema:
+        type: string
+        enum:
+        - MY
+        - SG
+        - ID
   securitySchemes:
     hmacSignature:
       type: apiKey
