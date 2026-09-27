@@ -87,56 +87,47 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    ValidationError:
-      description: Invalid parameters (validation) or refund outside window (stale_transaction).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Unknown app_id, missing transaction, or empty transaction history.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    InternalError:
-      description: Server failure (internal_error / unexpected_error).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Invalid signature or outlet not linked to the integration.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    UnprocessableEntity:
-      description: Unsupported format or provider rejection.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  parameters:
+    CountryCode:
+      name: country_code
+      in: path
+      required: true
+      description: Market the request targets.
+      schema:
+        type: string
+        enum:
+        - MY
+        - SG
+        - ID
   schemas:
-    CreateQrCodeResponse:
+    MerchantScanRequest:
       type: object
+      required:
+      - omni_reference
+      - total_amount_cents
+      - app_id
+      - outlet_id
+      - code
+      - sign
       properties:
+        omni_reference:
+          type: string
+          maxLength: 28
+        total_amount_cents:
+          type: integer
+        app_id:
+          type: string
+        outlet_id:
+          type: integer
         code:
           type: string
-          description: Payment URL or QR payload.
-        format:
+          description: Customer QR or barcode payload.
+        callback_url:
           type: string
-        expires_in:
-          type: integer
-          description: Seconds until expiry.
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Machine-readable error code (e.g. validation, stale_transaction, resource_not_found, provider, internal_error, unexpected_error, failed_request, already_refunded).
-        message:
+        details:
+          type: object
+          description: Arbitrary JSON metadata (excluded from signature).
+        sign:
           type: string
     CreateQrCodeRequest:
       type: object
@@ -291,47 +282,56 @@ components:
         sign:
           type: string
           description: Present on webhook callback payloads for verification.
-    MerchantScanRequest:
+    CreateQrCodeResponse:
       type: object
-      required:
-      - omni_reference
-      - total_amount_cents
-      - app_id
-      - outlet_id
-      - code
-      - sign
       properties:
-        omni_reference:
-          type: string
-          maxLength: 28
-        total_amount_cents:
-          type: integer
-        app_id:
-          type: string
-        outlet_id:
-          type: integer
         code:
           type: string
-          description: Customer QR or barcode payload.
-        callback_url:
+          description: Payment URL or QR payload.
+        format:
           type: string
-        details:
-          type: object
-          description: Arbitrary JSON metadata (excluded from signature).
-        sign:
+        expires_in:
+          type: integer
+          description: Seconds until expiry.
+    Error:
+      type: object
+      properties:
+        error:
           type: string
-  parameters:
-    CountryCode:
-      name: country_code
-      in: path
-      required: true
-      description: Market the request targets.
-      schema:
-        type: string
-        enum:
-        - MY
-        - SG
-        - ID
+          description: Machine-readable error code (e.g. validation, stale_transaction, resource_not_found, provider, internal_error, unexpected_error, failed_request, already_refunded).
+        message:
+          type: string
+  responses:
+    Unauthorized:
+      description: Invalid signature or outlet not linked to the integration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Unknown app_id, missing transaction, or empty transaction history.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalError:
+      description: Server failure (internal_error / unexpected_error).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Invalid parameters (validation) or refund outside window (stale_transaction).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: Unsupported format or provider rejection.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     hmacSignature:
       type: apiKey
