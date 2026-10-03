@@ -100,6 +100,17 @@ components:
         - SG
         - ID
   schemas:
+    CreateQrCodeResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Payment URL or QR payload.
+        format:
+          type: string
+        expires_in:
+          type: integer
+          description: Seconds until expiry.
     MerchantScanRequest:
       type: object
       required:
@@ -192,6 +203,14 @@ components:
           description: Enable test payments when supported.
         sign:
           type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Machine-readable error code (e.g. validation, stale_transaction, resource_not_found, provider, internal_error, unexpected_error, failed_request, already_refunded).
+        message:
+          type: string
     Transaction:
       type: object
       properties:
@@ -282,28 +301,15 @@ components:
         sign:
           type: string
           description: Present on webhook callback payloads for verification.
-    CreateQrCodeResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Payment URL or QR payload.
-        format:
-          type: string
-        expires_in:
-          type: integer
-          description: Seconds until expiry.
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Machine-readable error code (e.g. validation, stale_transaction, resource_not_found, provider, internal_error, unexpected_error, failed_request, already_refunded).
-        message:
-          type: string
   responses:
-    Unauthorized:
-      description: Invalid signature or outlet not linked to the integration.
+    ValidationError:
+      description: Invalid parameters (validation) or refund outside window (stale_transaction).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: Unsupported format or provider rejection.
       content:
         application/json:
           schema:
@@ -320,14 +326,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: Invalid parameters (validation) or refund outside window (stale_transaction).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    UnprocessableEntity:
-      description: Unsupported format or provider rejection.
+    Unauthorized:
+      description: Invalid signature or outlet not linked to the integration.
       content:
         application/json:
           schema:
