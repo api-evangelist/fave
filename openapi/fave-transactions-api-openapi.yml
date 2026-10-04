@@ -196,27 +196,15 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  parameters:
-    CountryCode:
-      name: country_code
-      in: path
-      required: true
-      description: Market the request targets.
-      schema:
-        type: string
-        enum:
-        - MY
-        - SG
-        - ID
   responses:
-    ValidationError:
-      description: Invalid parameters (validation) or refund outside window (stale_transaction).
+    Unauthorized:
+      description: Invalid signature or outlet not linked to the integration.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Unknown app_id, missing transaction, or empty transaction history.
+    ValidationError:
+      description: Invalid parameters (validation) or refund outside window (stale_transaction).
       content:
         application/json:
           schema:
@@ -227,8 +215,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Invalid signature or outlet not linked to the integration.
+    NotFound:
+      description: Unknown app_id, missing transaction, or empty transaction history.
       content:
         application/json:
           schema:
@@ -254,14 +242,6 @@ components:
           type: integer
           description: Optional partial amount; cannot exceed charged_amount_cents.
         sign:
-          type: string
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Machine-readable error code (e.g. validation, stale_transaction, resource_not_found, provider, internal_error, unexpected_error, failed_request, already_refunded).
-        message:
           type: string
     Transaction:
       type: object
@@ -353,6 +333,14 @@ components:
         sign:
           type: string
           description: Present on webhook callback payloads for verification.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Machine-readable error code (e.g. validation, stale_transaction, resource_not_found, provider, internal_error, unexpected_error, failed_request, already_refunded).
+        message:
+          type: string
     AcknowledgeRequest:
       type: object
       required:
@@ -369,6 +357,18 @@ components:
           type: integer
         sign:
           type: string
+  parameters:
+    CountryCode:
+      name: country_code
+      in: path
+      required: true
+      description: Market the request targets.
+      schema:
+        type: string
+        enum:
+        - MY
+        - SG
+        - ID
   securitySchemes:
     hmacSignature:
       type: apiKey
