@@ -88,26 +88,8 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
-    Unauthorized:
-      description: Invalid signature or outlet not linked to the integration.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: Invalid parameters (validation) or refund outside window (stale_transaction).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     UnprocessableEntity:
       description: Unsupported format or provider rejection.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    InternalError:
-      description: Server failure (internal_error / unexpected_error).
       content:
         application/json:
           schema:
@@ -118,7 +100,128 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    InternalError:
+      description: Server failure (internal_error / unexpected_error).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Invalid parameters (validation) or refund outside window (stale_transaction).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Invalid signature or outlet not linked to the integration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    MerchantScanRequest:
+      type: object
+      required:
+      - omni_reference
+      - total_amount_cents
+      - app_id
+      - outlet_id
+      - code
+      - sign
+      properties:
+        omni_reference:
+          type: string
+          maxLength: 28
+        total_amount_cents:
+          type: integer
+        app_id:
+          type: string
+        outlet_id:
+          type: integer
+        code:
+          type: string
+          description: Customer QR or barcode payload.
+        callback_url:
+          type: string
+        details:
+          type: object
+          description: Arbitrary JSON metadata (excluded from signature).
+        sign:
+          type: string
+    CreateQrCodeRequest:
+      type: object
+      required:
+      - omni_reference
+      - total_amount_cents
+      - app_id
+      - outlet_id
+      - sign
+      properties:
+        omni_reference:
+          type: string
+          maxLength: 28
+          description: Partner reference, format "[prefix]-[id]".
+        total_amount_cents:
+          type: integer
+          description: Positive amount in cents. SG max 1999900.
+        app_id:
+          type: string
+        outlet_id:
+          type: integer
+        format:
+          type: string
+          default: base64
+          enum:
+          - txt
+          - base64
+          - web_url
+          - grab
+          - paynow
+          - alipay
+          - wcp
+          - shopeepay
+          - atome
+        redirect_url:
+          type: string
+          description: Customer return URL for web_url format.
+        callback_url:
+          type: string
+          description: Per-payment webhook override.
+        payment_option:
+          type: string
+          default: both
+          enum:
+          - both
+          - app
+          - pwa
+        expiry_time:
+          type: integer
+          description: Unix timestamp when the code expires.
+        shopper_details:
+          type: object
+          properties:
+            email:
+              type: string
+            phone:
+              type: string
+            location:
+              type: string
+        test:
+          type: boolean
+          description: Enable test payments when supported.
+        sign:
+          type: string
+    CreateQrCodeResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Payment URL or QR payload.
+        format:
+          type: string
+        expires_in:
+          type: integer
+          description: Seconds until expiry.
     Transaction:
       type: object
       properties:
@@ -209,46 +312,6 @@ components:
         sign:
           type: string
           description: Present on webhook callback payloads for verification.
-    MerchantScanRequest:
-      type: object
-      required:
-      - omni_reference
-      - total_amount_cents
-      - app_id
-      - outlet_id
-      - code
-      - sign
-      properties:
-        omni_reference:
-          type: string
-          maxLength: 28
-        total_amount_cents:
-          type: integer
-        app_id:
-          type: string
-        outlet_id:
-          type: integer
-        code:
-          type: string
-          description: Customer QR or barcode payload.
-        callback_url:
-          type: string
-        details:
-          type: object
-          description: Arbitrary JSON metadata (excluded from signature).
-        sign:
-          type: string
-    CreateQrCodeResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Payment URL or QR payload.
-        format:
-          type: string
-        expires_in:
-          type: integer
-          description: Seconds until expiry.
     Error:
       type: object
       properties:
@@ -256,69 +319,6 @@ components:
           type: string
           description: Machine-readable error code (e.g. validation, stale_transaction, resource_not_found, provider, internal_error, unexpected_error, failed_request, already_refunded).
         message:
-          type: string
-    CreateQrCodeRequest:
-      type: object
-      required:
-      - omni_reference
-      - total_amount_cents
-      - app_id
-      - outlet_id
-      - sign
-      properties:
-        omni_reference:
-          type: string
-          maxLength: 28
-          description: Partner reference, format "[prefix]-[id]".
-        total_amount_cents:
-          type: integer
-          description: Positive amount in cents. SG max 1999900.
-        app_id:
-          type: string
-        outlet_id:
-          type: integer
-        format:
-          type: string
-          default: base64
-          enum:
-          - txt
-          - base64
-          - web_url
-          - grab
-          - paynow
-          - alipay
-          - wcp
-          - shopeepay
-          - atome
-        redirect_url:
-          type: string
-          description: Customer return URL for web_url format.
-        callback_url:
-          type: string
-          description: Per-payment webhook override.
-        payment_option:
-          type: string
-          default: both
-          enum:
-          - both
-          - app
-          - pwa
-        expiry_time:
-          type: integer
-          description: Unix timestamp when the code expires.
-        shopper_details:
-          type: object
-          properties:
-            email:
-              type: string
-            phone:
-              type: string
-            location:
-              type: string
-        test:
-          type: boolean
-          description: Enable test payments when supported.
-        sign:
           type: string
   parameters:
     CountryCode:

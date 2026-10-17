@@ -197,14 +197,8 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
-    Unauthorized:
-      description: Invalid signature or outlet not linked to the integration.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: Invalid parameters (validation) or refund outside window (stale_transaction).
+    NotFound:
+      description: Unknown app_id, missing transaction, or empty transaction history.
       content:
         application/json:
           schema:
@@ -215,8 +209,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Unknown app_id, missing transaction, or empty transaction history.
+    ValidationError:
+      description: Invalid parameters (validation) or refund outside window (stale_transaction).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Invalid signature or outlet not linked to the integration.
       content:
         application/json:
           schema:
@@ -241,6 +241,22 @@ components:
         partial_refund_cents:
           type: integer
           description: Optional partial amount; cannot exceed charged_amount_cents.
+        sign:
+          type: string
+    AcknowledgeRequest:
+      type: object
+      required:
+      - omni_reference
+      - app_id
+      - outlet_id
+      - sign
+      properties:
+        omni_reference:
+          type: string
+        app_id:
+          type: string
+        outlet_id:
+          type: integer
         sign:
           type: string
     Transaction:
@@ -340,22 +356,6 @@ components:
           type: string
           description: Machine-readable error code (e.g. validation, stale_transaction, resource_not_found, provider, internal_error, unexpected_error, failed_request, already_refunded).
         message:
-          type: string
-    AcknowledgeRequest:
-      type: object
-      required:
-      - omni_reference
-      - app_id
-      - outlet_id
-      - sign
-      properties:
-        omni_reference:
-          type: string
-        app_id:
-          type: string
-        outlet_id:
-          type: integer
-        sign:
           type: string
   parameters:
     CountryCode:
