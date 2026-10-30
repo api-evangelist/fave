@@ -64,6 +64,137 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Fave is a company surfaced as a portfolio company of 500-global and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+Fave is a Malaysia- and Singapore-based lifestyle and payments app offering deals, cashback, rewards, eCards, and QR-code payments, operated by Fave Asia Technologies and owned by Pine Labs. For merchants and platforms, Fave exposes the FavePay Omni (FPO) partner API: create single-use QR codes or payment URLs, process customer-presented (merchant-scan) charges, look up, list, and acknowledge transactions, issue full or partial refunds, and receive signed webhook callbacks on every status change. Every request is signed with HMAC-SHA256 using a secret key Fave issues during partner onboarding. FavePay Omni operates across Malaysia (MY), Singapore (SG), and Indonesia (ID).
 
-Backed by: 500-global — https://myfave.com
+**Areas:** Company · Payments · Fintech · QR Payments · Loyalty · Cashback · Merchant Services · Southeast Asia · Webhook
+
+## Fave on APIs.io
+
+Everything profiled for Fave is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/fave/](https://apis.io/providers/fave/)** — or go straight to one of the APIs or properties below.
+
+### APIs (2)
+
+- [Fave Payments API](https://apis.io/apis/fave/fave-payments-api/) — Create charges via QR code or merchant scan.
+- [Fave Transactions API](https://apis.io/apis/fave/fave-transactions-api/) — Look up, list, acknowledge and refund transactions.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Arazzo workflows (2)
+
+Multi-step workflows that chain operations into a business task.
+
+- [Accept a FavePay Omni payment and refund it](https://apis.io/arazzos/fave/fave-accept-and-refund/)
+- [Merchant-scan charge and reconcile](https://apis.io/arazzos/fave/fave-scan-and-reconcile/)
+
+#### AsyncAPI (2)
+
+Event-driven and webhook contracts.
+
+- [FavePay Omni Webhooks](https://apis.io/asyncapis/fave/fave-favepay-omni-asyncapi/)
+- [Fave Favepay Omni Webhooks](https://apis.io/asyncapis/fave/fave-favepay-omni-webhooks/)
+
+#### Event channels (1)
+
+Individual events and webhooks the provider emits.
+
+- [{callback_url}](https://apis.io/channels/fave/callback-url/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [fave-favepay-omni](https://apis.io/servers/fave/fave-favepay-omni/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Fave Agentic Access](https://apis.io/agentic-access/fave/fave-agentic-access/)
+
+#### Collections (2)
+
+Postman and Open Collection request collections.
+
+- [FavePay Omni (FPO) Payments API](https://apis.io/collections/fave/open-fave-payments-api/)
+- [FavePay Omni (FPO) Payments Transactions API](https://apis.io/collections/fave/open-fave-transactions-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Fave Favepay Omni Overlay](https://apis.io/overlays/fave/fave-favepay-omni-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Fave Authentication](https://apis.io/security/fave/fave-authentication/)
+- [Fave Domain Security](https://apis.io/security/fave/fave-domain-security/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://myfave.com)
+- [Documentation](https://developers.myfave.com/)
+- [API reference](https://developers.myfave.com/fpo-guide.html)
+- [Sign up](https://app.favebiz.com/sign-up?ref=favebiz)
+- [Support](https://help.myfave.com/hc/en-us)
+- [Blog](https://www.favebiz.com/blog/)
+- [Terms of service](https://help.myfave.com/hc/en-us/sections/205050988-Terms-of-Use)
+- [Privacy policy](https://help.myfave.com/hc/en-us/sections/205051008-Privacy-Policy)
+
+## API Evangelist rating
+
+**Kin Score 30.4** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 21.9 |
+| Contract governance | 4.5 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 54.2 |
+| Access clarity | 27.6 |
+
+**Agent readiness 27.1** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 22.3** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/fave/](https://apis.io/providers/fave/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Fave: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/fave/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
